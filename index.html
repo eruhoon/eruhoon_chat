@@ -2,60 +2,19 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
 		<title>Eruhoon Chatting</title>
-		<link href="theme.css">
+		<link rel="stylesheet" type="text/css" href="theme.css">
+
 		<script src="/socket.io/socket.io.js"></script>
-		<script>
-			var socket = io.connect('http://210.118.74.154:8124');
-
-			socket.on('connect', function(){
-				socket.emit('addme', prompt('Who are you?'));
-			});
-
-			socket.on('chat', function(username, data){
-				var p = document.createElement('p');
-				p.innerHTML = username + ': ' + data;
-				document.getElementById('output').appendChild(p);
-			});
-            
-            socket.on('afterSendChat', function(){
-                scrollDown();
-            })
-
-			window.addEventListener('load', function(){
-				document.getElementById('sendButton').addEventListener('click', function(){
-                    sendChat();
-				}, false);
-			}, false);
-
-		</script>
-
-		<script>
-            var sendChat = function(){
-                var text = document.getElementById('chatData').value;
-                document.getElementById('chatData').value = "";
-                socket.emit('onSendChat', text);
-            }
-        
-            var scrollDown = function(){
-                var outputDiv = document.getElementById('output');
-                outputDiv.scrollTop = outputDiv.scrollHeight;
-            }
-            
-			var enter_press = function(event){
-				if(event.keyCode == 13){
-					document.getElementById('sendButton').click();
-				}
-			}
-		</script>
+		<script type"application/javascript" src="/js/chat.js"></script>
 	</head>
 
 	<body>
-		<div id="output" style="height:300px; overflow-y:scroll;"></div>
-		<div id="send">
-			<input type="text" id="chatData" size="100" onkeypress="enter_press(event);" /><br/>
-			<input type="button" id="sendButton" value="Send Text" />
+		<div class="chatting_window" id="chatContainer"></div>
+		<div class="chatting_inputbox" id="send">
+			<input class="chatting_textbox" type="text" id="chatData" size="255" /><br/>
 		</div>
 	</body>
-
 </html>

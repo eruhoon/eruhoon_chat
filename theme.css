@@ -1,3 +1,42 @@
+@charset "utf-8";
+
+@font-face {
+	font-family: 'seoul_namsan_lm';
+	font-style: normal;
+	font-weight: normal;
+	src: local('seoul_namsan_lm'), url('../asset/seoul_namsan_lm.ttf') format('truetype');
+}
+
+body {
+	margin: 0;
+	overflow-y:scroll;
+	overflow: hidden;
+}
+
 div {
-	background-color: #FF0000;
+	width: 100%;
+}
+
+div.chatting_window {
+	background-color: #115511;
+	color: #FFFF00;
+	overflow-y:scroll;
+	overflow: hidden;
+	font-family: 'seoul_namsan_lm', sans-serif;
+}
+
+div.chatting_inputbox {
+	height: 50px;
+}
+
+input {
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
+
+
+input.chatting_textbox {
+	width: 100%;
+	height: 40px;
 }
