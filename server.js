@@ -3,8 +3,6 @@ var app = require('http').createServer(handler);
 var io = require('socket.io').listen(app);
 var fs = require('fs');
 
-var counter;
-
 
 app.listen(8124);
 
@@ -23,9 +21,10 @@ function handler (req, res) {
 }
 
 io.sockets.on('connection', function (socket) {
+    
 	socket.on('addme', function(username){
 		socket.username = username;
-		socket.emit('chat', 'SERVER', 'You Have connected');
+		socket.emit('chat', 'SERVER', 'You('+username+') asdfasdfads Have connected');
 		socket.broadcast.emit('chat', 'SERVER', username+' is on deck');
 	});
 

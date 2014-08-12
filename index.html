@@ -18,29 +18,38 @@
 			});
 
 			window.addEventListener('load', function(){
-				document.getElementById('sendtext').addEventListener('click', function(){
-					var text = document.getElementById('data').value;
-					socket.emit('sendchat', text);
+				document.getElementById('sendButton').addEventListener('click', function(){
+                    sendChat();
+                    //var text = document.getElementById('chatData').value;
+                    //socket.emit('sendchat', text);
 				}, false);
 			}, false);
 
 		</script>
 
 		<script>
+            var sendChat = function(){
+                var text = document.getElementById('chatData').value;
+                document.getElementById('chatData').value = "";
+                socket.emit('sendchat', text);
+                var outputDiv = document.getElementById('output');
+                outputDiv.scrollTop = outputDiv.scrollHeight;
+            }
+            
 			var enter_press = function(event){
-				if(event.keyCode = 13){
-					document.getElementById('sendtext').click();
-                    document.getElementById('text').value = "";
+				if(event.keyCode == 13){
+					document.getElementById('sendButton').click();
+                    document.getElementById('chatData').value = "";
 				}
 			}
 		</script>
 	</head>
 
 	<body>
-		<div id="output"></div>
+		<div id="output" style="height:300px; overflow-y:scroll;"></div>
 		<div id="send">
-			<input type="text" id="data" size="100" onkeypress="enter_press(event);" /><br/>
-			<input type="button" id="sendtext" value="Send Text" />
+			<input type="text" id="chatData" size="100" onkeypress="enter_press(event);" /><br/>
+			<input type="button" id="sendButton" value="Send Text" />
 		</div>
 	</body>
 
