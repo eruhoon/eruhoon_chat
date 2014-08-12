@@ -24,13 +24,19 @@ io.sockets.on('connection', function (socket) {
     
 	socket.on('addme', function(username){
 		socket.username = username;
-		socket.emit('chat', 'SERVER', 'You('+username+') asdfasdfads Have connected');
+		socket.emit('chat', 'SERVER', 'You Have connected');
 		socket.broadcast.emit('chat', 'SERVER', username+' is on deck');
 	});
 
-	socket.on('sendchat', function(data){
+	socket.on('onSendChat', function(data){
+        if(data.trim()==""){
+            return;
+        }
+        //data = encodeURI(data);
 		io.sockets.emit('chat', socket.username, data);
+        io.sockets.emit('afterSendChat');
 	});
+              
 
 	socket.on('disconnect', function(){
 		io.sockets.emit('chat', 'SERVER', socket.username + ' has left the building');

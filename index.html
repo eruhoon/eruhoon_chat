@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>bi-directional communication</title>
+		<title>Eruhoon Chatting</title>
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
 			var socket = io.connect('http://210.118.74.154:8124');
@@ -16,12 +16,14 @@
 				p.innerHTML = username + ': ' + data;
 				document.getElementById('output').appendChild(p);
 			});
+            
+            socket.on('afterSendChat', function(){
+                scrollDown();
+            })
 
 			window.addEventListener('load', function(){
 				document.getElementById('sendButton').addEventListener('click', function(){
                     sendChat();
-                    //var text = document.getElementById('chatData').value;
-                    //socket.emit('sendchat', text);
 				}, false);
 			}, false);
 
@@ -31,7 +33,10 @@
             var sendChat = function(){
                 var text = document.getElementById('chatData').value;
                 document.getElementById('chatData').value = "";
-                socket.emit('sendchat', text);
+                socket.emit('onSendChat', text);
+            }
+        
+            var scrollDown = function(){
                 var outputDiv = document.getElementById('output');
                 outputDiv.scrollTop = outputDiv.scrollHeight;
             }
@@ -39,7 +44,6 @@
 			var enter_press = function(event){
 				if(event.keyCode == 13){
 					document.getElementById('sendButton').click();
-                    document.getElementById('chatData').value = "";
 				}
 			}
 		</script>
