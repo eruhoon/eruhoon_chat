@@ -28,6 +28,36 @@ div.chatting_window {
 	font-family: 'seoul_namsan_lm', sans-serif;
 }
 
+div.chatname{
+	margin: 2px 5px 2px 5px;
+	padding: 0 5px 0 5px;
+	display: inline-block;
+	width: auto;
+	height: 20px;
+	background-color: #FFFF00;
+	color: #115511;
+	text-align: center;
+
+	border-radius: 10px; 
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px; 
+}
+
+div.chatdata{
+	margin: 2px 5px 2px 5px;
+	padding: 0 10px 0 10px;
+	display: inline-block;
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.7);
+	color: #000000;
+
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px; 
+	-khtml-border-radius: 15px; 
+}
+
 div.chatting_inputbox {
 	height: 50px;
 }
@@ -41,5 +71,5 @@ input {
 
 input.chatting_textbox {
 	width: 100%;
-	height: 40px;
+	height: 50px;
 }

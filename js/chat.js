@@ -1,4 +1,5 @@
-var socket = io.connect('http://210.118.74.154:8124');
+//var socket = io.connect('http://210.118.74.154:8124');
+var socket = io.connect('http://localhost:8124');
 
 socket.on('connect', function(){
 	var username = "";
@@ -9,10 +10,7 @@ socket.on('connect', function(){
 });
 
 socket.on('chat', function(username, data){
-	var p = document.createElement('p');
-    
-	p.innerHTML = username + ': ' + data;
-	document.getElementById('chatContainer').appendChild(p);
+	makeChatCloud(username, data);
 });
 
 socket.on('afterSendChat',function(){
@@ -37,11 +35,13 @@ var sendChat = function(){
 	document.getElementById('chatData').value = "";
 	socket.emit('onSendChat', text);
 }
-        
+   
+
 var scrollDown = function(){
 	var chatContainer = document.getElementById('chatContainer');
 	chatContainer.scrollTop = chatContainer.scrollHeight;
 }
+
 
 var enter_press = function(event){
 	if(event.keyCode == 13){
@@ -49,10 +49,40 @@ var enter_press = function(event){
 	}
 }
 
+
 var resize = function(){
 	var viewHeight = window.innerHeight;
+	var viewWidth = window.innerWidth;
+	var chatdataMargin = 30;
+	var chatdataWidth = viewWidth - chatdataMargin;
 	var inputboxHeight = document.getElementsByClassName('chatting_inputbox')[0].clientHeight;
 
-	var chatContainer = document.getElementById('chatContainer');
-	chatContainer.style.height = (viewHeight - inputboxHeight) + "px";
+	for(var i=0; i<document.getElementsByClassName('chatdata').length; i++){
+		document.getElementsByClassName('chatdata')[i].style.width = chatdataWidth + "px";
+	}
+	document.getElementById('chatContainer').style.height = (viewHeight - inputboxHeight) + "px";
+}
+
+
+var makeChatCloud = function(username, data){
+	var newCloud = document.createElement('div');
+    var nameDiv = document.createElement('div');
+    var chatDiv = document.createElement('div');
+
+    var chatp = document.createElement('p');
+    
+    nameDiv.innerHTML = username;
+    chatp.innerHTML = data;
+
+	nameDiv.className = 'chatname';
+    chatDiv.className = 'chatdata';
+
+    chatDiv.appendChild(chatp);
+
+    newCloud.appendChild(nameDiv);
+    newCloud.appendChild(chatDiv);
+
+	document.getElementById('chatContainer').appendChild(newCloud);
+
+	resize();
 }
