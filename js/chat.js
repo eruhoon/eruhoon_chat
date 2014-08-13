@@ -2,7 +2,7 @@ var socket = io.connect('http://210.118.74.154:8124');
 
 socket.on('connect', function(){
 	var username = "";
-	while(username=="" || username==null){
+	while(username=="" || username==null || username.length>20){
 		username = prompt('Who are you?');
 	}
 	socket.emit('addme', username);

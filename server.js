@@ -30,7 +30,7 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
 
 	socket.on('addme', function(username){
-		if(username=="" || username==null){
+		if(username=="" || username==null || username.length>20){
 			return;
 		}
 		username = username.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
