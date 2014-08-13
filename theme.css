@@ -4,12 +4,15 @@
 	font-family: 'seoul_namsan_lm';
 	font-style: normal;
 	font-weight: normal;
-	src: local('seoul_namsan_lm'), url('../asset/seoul_namsan_lm.ttf') format('truetype');
+	src: local('seoul_namsan_lm'), url('../asset/seoul_namsan_lm.woff') format('woff');
+}
+
+::-webkit-scrollbar {
+    width: 0px;
 }
 
 body {
 	margin: 0;
-	overflow-y:scroll;
 	overflow: hidden;
 }
 
@@ -20,8 +23,8 @@ div {
 div.chatting_window {
 	background-color: #115511;
 	color: #FFFF00;
-	overflow-y:scroll;
-	overflow: hidden;
+	overflow-y: auto;
+	overflow-x: hidden;
 	font-family: 'seoul_namsan_lm', sans-serif;
 }
 

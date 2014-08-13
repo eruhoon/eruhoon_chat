@@ -38,9 +38,9 @@ io.sockets.on('connection', function (socket) {
 		socket.emit('chat', 'SERVER', 'You Have connected');
 		socket.broadcast.emit('chat', 'SERVER', username+' is on deck');
 		io.sockets.emit('afterSendChat');
-		console.log("LOGIN : "+username+"("+socket.handshake.address.address+")");
+		socket.userip = socket.request.connection.remoteAddress;
+		console.log("LOGIN : "+username+"("+socket.userip+")");
 	});
-
 
 	socket.on('onSendChat', function(data){
         if(data.trim()=="" || socket.username==null){
@@ -54,6 +54,7 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('disconnect', function(){
 		io.sockets.emit('chat', 'SERVER', socket.username + ' has left the building');
+		io.sockets.emit('afterSendChat');
 		console.log("LOGOUT : "+socket.username);
 	});
 
