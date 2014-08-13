@@ -10,11 +10,12 @@ socket.on('connect', function(){
 
 socket.on('chat', function(username, data){
 	var p = document.createElement('p');
+    
 	p.innerHTML = username + ': ' + data;
 	document.getElementById('chatContainer').appendChild(p);
 });
 
-socket.on('afterSendChat', function(){
+socket.on('afterSendChat',function(){
     scrollDown();
 })
 
