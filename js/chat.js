@@ -1,12 +1,16 @@
-//var socket = io.connect('http://210.118.74.154:8124');
-var socket = io.connect('http://localhost:8124');
+var socket = io.connect('http://210.118.74.154:8124');
+//var socket = io.connect('http://localhost:8124');
 
 socket.on('connect', function(){
 	var username = "";
-	while(username=="" || username==null || username.length>20){
-		username = prompt('Who are you?');
+	while(username.trim()=="" || username==null || username.length>20){
+		username = prompt('누구셈?');
 	}
 	socket.emit('addme', username);
+});
+
+socket.on('systemChat', function(username, data){
+	makeSystemCloud(username, data);
 });
 
 socket.on('chat', function(username, data){
@@ -15,7 +19,10 @@ socket.on('chat', function(username, data){
 
 socket.on('afterSendChat',function(){
     scrollDown();
-})
+});
+
+
+
 
 window.addEventListener('load', function(){
 	resize();
@@ -61,6 +68,14 @@ var resize = function(){
 		document.getElementsByClassName('chatdata')[i].style.width = chatdataWidth + "px";
 	}
 	document.getElementById('chatContainer').style.height = (viewHeight - inputboxHeight) + "px";
+}
+
+var makeSystemCloud = function(username, data){
+	var newCloud = document.createElement('div');
+	newCloud.className = 'chatsystem';
+	newCloud.innerHTML = "[SYSTEM] " + data;
+	document.getElementById('chatContainer').appendChild(newCloud);
+	resize();	
 }
 
 

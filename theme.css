@@ -28,6 +28,10 @@ div.chatting_window {
 	font-family: 'seoul_namsan_lm', sans-serif;
 }
 
+div.chatsystem{
+	text-align: right;
+}
+
 div.chatname{
 	margin: 2px 5px 2px 5px;
 	padding: 0 5px 0 5px;
