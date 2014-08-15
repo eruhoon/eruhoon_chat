@@ -5,13 +5,22 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
 		<title>Eruhoon Chatting</title>
-		<link rel="stylesheet" type="text/css" href="theme.css">
-
+		<link rel="stylesheet" href="theme.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 		<script src="/socket.io/socket.io.js"></script>
-		<script type"application/javascript" src="/js/chat.js"></script>
+		<script src="/js/socket.js"></script>
+		<script src="/js/listen.js"></script>
+		<script src="/js/chat.js"></script>
+		<script src="/js/animation.js"></script>
 	</head>
 
 	<body>
+		<div>
+			<div class="chatting_control_tab" style="opacity: 1;"></div>
+			<div class="chatting_control" id="changeName" style="opacity: 1;">
+				<i class="fa fa-tags"></i>
+			</div>
+		</div>
 		<div class="chatting_window" id="chatContainer"></div>
 		<div class="chatting_inputbox" id="send">
 			<input class="chatting_textbox" type="text" id="chatData" size="255" /><br/>
