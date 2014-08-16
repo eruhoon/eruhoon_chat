@@ -63,7 +63,7 @@ div.profile_picture {
 	display: inline-block;
 	width: 70px;
 	height: 70px;
-	background-color: #FFFFFF;
+	/*background-color: #FFFFFF;*/
 }
 
 div.chatballoon{
@@ -117,5 +117,11 @@ input {
 input.chatting_textbox {
 	width: 100%;
 	height: 50px;
+}
+
+img.profile_picimg {
+	width: 60px;
+	height: 60px;
+	padding: 5px;
 }
 

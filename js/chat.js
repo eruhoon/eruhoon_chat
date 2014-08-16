@@ -84,8 +84,6 @@ var resize = function(){
 	var chatdataWidth = chatballoonWidth - chatdataMargin;
 	var inputboxHeight = document.getElementsByClassName('chatting_inputbox')[0].clientHeight;
 
-	//var chatData = document.getElementsByClassName('chatdata');
-	
 	for(var i=0; i<chatDataDiv.length; i++){
 		chatBalloonDiv[i].style.width = chatballoonWidth + "px";
 		chatDataDiv[i].style.width = chatdataWidth + "px";
@@ -133,6 +131,7 @@ var makeChatCloud = function(_username, _text){
     chatDiv.appendChild(chatp);
 
 	profilePicDiv.className = 'profile_picture';
+	profilePicDiv.innerHTML = '<img class="profile_picimg" src="'+'/asset/default.png'+'">';
 
     chatBalloonDiv.className = 'chatballoon';
     chatBalloonDiv.appendChild(nameDiv);
