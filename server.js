@@ -7,6 +7,9 @@ var cookie = require('cookie');
 
 app.listen(8124);
 
+setInterval(function() {
+    gc();
+}, 30000);
 
 ///  MESSAGE  //////////////////////////////////////////////////////////////////
 var noticeMessage = function(){ return "채팅에 오신걸 환영합니다."; }
@@ -68,36 +71,36 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
 
 	///  ADD ME  ///
-	socket.on('addme', function(_username){
-
+	socket.on('addme', function(_user){
+		
 		var userip = socket.request.connection.remoteAddress;
-		var username = _username;
-
-		if(!validateUserName(username)){
-			username = 'GUEST';
+		var nickname = _user.nickname;
+		
+		if(!validateUserName(nickname)){
+			nickname = 'GUEST';
 		}
-		username = escapeTag(username);
-
-		socket.username = username;
-		socket.userip = socket.request.connection.remoteAddress;
+		nickname = escapeTag(nickname);
 
 		var newUser = {
-			'username': username,
-			'userip': userip
+			nickname: nickname,
+			icon: _user.icon,
+			ip: userip
 		}
+
+		socket.userStatus = newUser;
 		userList.push(newUser);
 
 		socket.emit('systemChat', noticeMessage());
-		socket.broadcast.emit('systemChat', connectMessage(username));
+		socket.broadcast.emit('systemChat', connectMessage(nickname));
 		io.sockets.emit('afterSendChat');
 		
-		console.log("LOGIN : " + username + "("+userip+")");
+		console.log("LOGIN : " + nickname + "("+userip+")");
 		
 	});
 
 	///  CHANGE NICKNAME ///
 	socket.on('onChangeName', function(_pn, _nn){
-		socket.username = _nn;
+		socket.userStatus.nickname = _nn;
 		io.sockets.emit('systemChat', changeNameMsg(_pn, _nn));
 		io.sockets.emit('afterSendChat');
 
@@ -108,28 +111,32 @@ io.sockets.on('connection', function (socket) {
 	socket.on('onSendChat', function(_data){
 
 		var data = _data;
-		var username = socket.username;
-		var userip = socket.userip;
+		var nickname = socket.userStatus.nickname;
+		var userip = socket.userStatus.ip;
 
-        if(data.trim()=="" || data==null){
-            return;
-        }
-        data = escapeTag(data);
-        data = processText(data);
+		if(data.trim()=="" || data==null){
+			return;
+		}
+		data = escapeTag(data);
+		data = processText(data);
 
-		io.sockets.emit('chat', username, data);
-        io.sockets.emit('afterSendChat');
+		var user = {
+			nickname: nickname,
+			icon: socket.userStatus.icon
+		};
+		io.sockets.emit('chat', user, data);
+		io.sockets.emit('afterSendChat');
 
-		console.log("[CHAT]" + username + "(" + userip + "): " + data);
+		console.log("[CHAT]" + nickname + "(" + userip + "): " + data);
 	});
 
 	///  DISCONNECT  ///
 	socket.on('disconnect', function(){
-		var username = socket.username;
-		io.sockets.emit('systemChat', disconnectMessage(username));
+		var nickname = socket.userStatus.nickname;
+		io.sockets.emit('systemChat', disconnectMessage(nickname));
 		io.sockets.emit('afterSendChat');
 
-		console.log("LOGOUT : " + username);
+		console.log("LOGOUT : " + nickname);
 	});
 
 });

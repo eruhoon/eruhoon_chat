@@ -7,47 +7,6 @@ var inputHistory = [''];
 var historyIndex = 0;
 
 
-///  GET USER NAME  ////////////////////////////////////////////////////////////
-var getUserName = function(){
-	var username = getCookie('username');
-	if(!validateUserName(username)){
-		username = askUserName(true);
-	}
-	return username;
-}
-
-
-///  ASK USER NAME  ////////////////////////////////////////////////////////////
-var askUserName = function(cancel){
-	var username = "";
-	while(!validateUserName(username)){
-		username = prompt('누구셈?');
-		if(cancel && username == null){
-			break;
-		}
-	}
-	return username;
-}
-
-
-///  SAVE USER NAME  ///////////////////////////////////////////////////////////
-var saveUserName = function(_username){
-	expiresYear = 5;
-	if(_username == null) _username = 'GUEST';
-	setCookie('username', _username, expiresYear*365);
-}
-
-
-///  VALIDATION USER NAME  /////////////////////////////////////////////////////
-var validateUserName = function(_username){
-	if(_username=="") return false;
-	if(_username==null) return false;
-	if(_username.trim()=="") return false;
-	if(_username.length>20) return false;
-	return true;
-}
-
-
 ///  SCROLL DOWN  //////////////////////////////////////////////////////////////
 var scrollDown = function(){
 	var chatContainer = document.getElementById('chatContainer');
@@ -105,8 +64,9 @@ var makeSystemCloud = function(data){
 
 
 ///  CHATTING CLOUD  ///////////////////////////////////////////////////////////
-var makeChatCloud = function(_username, _text){
+var makeChatCloud = function(_user, _text){
 	var myName = getCookie('username');
+	var myIcon = _user.icon;
 
 	var newCloud = document.createElement('div');
 	var chatBalloonDiv = document.createElement('div');
@@ -116,13 +76,13 @@ var makeChatCloud = function(_username, _text){
 
 	var chatp = document.createElement('p');
     
-    nameDiv.innerHTML = _username;
+    nameDiv.innerHTML = _user.nickname;
     chatp.innerHTML = _text;
 
 	nameDiv.className = 'chatname';
     chatDiv.className = 'chatdata';
     profilePicDiv.style.float = 'left';
-    if(myName == _username){
+    if(myName == _user.nickname){
     	profilePicDiv.style.float = 'right';
     	nameDiv.style.float = 'right';
     	chatDiv.style.textAlign = 'right';
@@ -131,7 +91,7 @@ var makeChatCloud = function(_username, _text){
     chatDiv.appendChild(chatp);
 
 	profilePicDiv.className = 'profile_picture';
-	profilePicDiv.innerHTML = '<img class="profile_picimg" src="'+'/asset/default.png'+'">';
+	profilePicDiv.innerHTML = '<img class="profile_picimg" src="'+myIcon+'">';
 
     chatBalloonDiv.className = 'chatballoon';
     chatBalloonDiv.appendChild(nameDiv);
@@ -148,25 +108,28 @@ var makeChatCloud = function(_username, _text){
 
 
 ///  GET COOKIE  ///////////////////////////////////////////////////////////////
-var getCookie = function(_cname) {
-    var name = _cname + "=";
+var getCookie = function(_ck) {
+    var name = _ck + "=";
     var cookieArray = document.cookie.split(';');
     for(var i=0; i<cookieArray.length; i++) {
         var c = cookieArray[i];
         while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) != -1) return c.substring(name.length,c.length);
+        if (c.indexOf(name) != -1){
+        	return decodeURIComponent(c.substring(name.length, c.length));
+        }
     }
     return "";
 }
 
 
 ///  SET COOKIE  ///////////////////////////////////////////////////////////////
-var setCookie = function(cname, cvalue, exdays)
+var setCookie = function(_ck, _cv)
 {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	var expiresYear = 5;
+	var d = new Date();
+    d.setTime(d.getTime() + (expiresYear*365*24*60*60*1000));
     var expires = "expires="+d.toGMTString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
+    document.cookie = _ck + "=" + encodeURIComponent(_cv) + "; " + expires;
 }
 
 
@@ -192,16 +155,18 @@ var sendChat = function(){
     var text = document.getElementById('chatData').value;
     document.getElementById('chatData').value = "";
 	socket.emit('onSendChat', text);
+	addHistory(text);
 }
 
 
 ///  SEND NICKNAME  ////////////////////////////////////////////////////////////
 var changeNameCallback = function(){
 	var prevUsername = getCookie('username');
-	var nowUsername = askUserName(true);
+	var nowUsername = User.askUserName(true);
 	if(nowUsername==null){
 		return;
 	}
-	saveUserName(nowUsername);
+	User.saveUserName(nowUsername);
 	socket.emit('onChangeName', prevUsername, nowUsername);
 }
+
