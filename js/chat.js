@@ -65,8 +65,9 @@ var makeSystemCloud = function(data){
 
 ///  CHATTING CLOUD  ///////////////////////////////////////////////////////////
 var makeChatCloud = function(_user, _text){
-	var myName = getCookie('username');
-	var myIcon = _user.icon;
+	var myName = escapeTag(getCookie('username'));
+	var userIcon = _user.icon;
+	var userName = _user.nickname;
 
 	var newCloud = document.createElement('div');
 	var chatBalloonDiv = document.createElement('div');
@@ -91,7 +92,7 @@ var makeChatCloud = function(_user, _text){
     chatDiv.appendChild(chatp);
 
 	profilePicDiv.className = 'profile_picture';
-	profilePicDiv.innerHTML = '<img class="profile_picimg" src="'+myIcon+'">';
+	profilePicDiv.innerHTML = '<img class="profile_picimg" src="'+userIcon+'">';
 
     chatBalloonDiv.className = 'chatballoon';
     chatBalloonDiv.appendChild(nameDiv);
@@ -170,3 +171,7 @@ var changeNameCallback = function(){
 	socket.emit('onChangeName', prevUsername, nowUsername);
 }
 
+///  ESCAPE TAG  ///////////////////////////////////////////////////////////////
+function escapeTag(str){
+	return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}

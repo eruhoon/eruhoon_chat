@@ -6,21 +6,19 @@ var User = {
 
 ///  GET USER ICON  ////////////////////////////////////////////////////////////	
 	getUserIcon : function(){
-		var userIcon = getCookie('usericon');
-		if(!userIcon){
-			var myIconNo = getRandomIcon();
-			setCookie('usericon', userIcon);
-		}
+		//var userIcon = getCookie('usericon') || this.getRandomIcon();
+		var userIcon = this.getRandomIcon();
 		return userIcon;
 	},
 
 ///  GET RANDOM ICON  //////////////////////////////////////////////////////////
 	getRandomIcon : function(){
 		var iconNo = Math.floor((Math.random() * this.MAX_ICON) + 1);
-		if(iconNo < 10) myIconNo = '0'+iconNo;
+		if(iconNo < 10) iconNo = '0'+iconNo;
 		userIcon = '/asset/profile_icon/'+iconNo+'.gif';
+		setCookie('usericon', userIcon);
 		return userIcon;
-	}
+	},
 
 ///  GET USER NAME  ////////////////////////////////////////////////////////////
 	getUserName : function(){

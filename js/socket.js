@@ -1,5 +1,5 @@
-//var socket = io.connect('http://210.118.74.154:8124');
-var socket = io.connect('http://localhost:8124');
+var socket = io.connect('http://210.118.74.154:8124');
+//var socket = io.connect('http://localhost:8124');
 
 socket.on('connect', function(){
 	var myStatus = {

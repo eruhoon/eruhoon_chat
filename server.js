@@ -100,11 +100,13 @@ io.sockets.on('connection', function (socket) {
 
 	///  CHANGE NICKNAME ///
 	socket.on('onChangeName', function(_pn, _nn){
-		socket.userStatus.nickname = _nn;
-		io.sockets.emit('systemChat', changeNameMsg(_pn, _nn));
+		var pastName = escapeTag(_pn);
+		var newName = escapeTag(_nn);
+		socket.userStatus.nickname = newName;
+		io.sockets.emit('systemChat', changeNameMsg(pastName, newName));
 		io.sockets.emit('afterSendChat');
 
-		console.log("[NICKNAME]" + _pn + " -> " + _nn);		
+		console.log("[NICKNAME]" + pastName + " -> " + newName);		
 	});
 
 	///  CHAT  ///
@@ -132,7 +134,9 @@ io.sockets.on('connection', function (socket) {
 
 	///  DISCONNECT  ///
 	socket.on('disconnect', function(){
+		if(socket.userStatus==undefined) return;
 		var nickname = socket.userStatus.nickname;
+		if(!validateUserName(nickname)) return;
 		io.sockets.emit('systemChat', disconnectMessage(nickname));
 		io.sockets.emit('afterSendChat');
 
